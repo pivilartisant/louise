@@ -1,0 +1,18 @@
+[project]
+name = "lousie"
+version = "0.1.0"
+description = "What is contemporary art"
+authors = [
+  { name = "Phoebe", email = "phoebe.contactme@protonmail.com" }
+]
+readme = "README.md"
+requires-python = ">=3.9"
+
+dependencies = [
+  "torch",
+  "torchvision",
+  "torchaudio",
+  "matplotlib>=3.9.4",
+  "ipykernel>=6.30.0",
+  "pandas>=2.3.1",
+]
