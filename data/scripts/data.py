@@ -3,13 +3,7 @@ import pandas as pd
 import random
 import matplotlib.pyplot as plt
 from data_class import ArtistCols, ArtworkCols
-
-# Load data
-artists_filepath = "Artists.csv"
-artworks_filepath = "Artworks.csv"
-raw_data_path = os.path.join("data","raw")
-artists = pd.read_csv(f"{raw_data_path}/{artists_filepath}")
-artworks = pd.read_csv(f"{raw_data_path}/{artworks_filepath}")
+from data_frames import artists, artworks
 
 
 # Initializing Variables
@@ -66,7 +60,7 @@ for category in categories_of_artworks:
 Photographs = artworks[artworks[ArtworkCols.Classification.value]=="Photograph"]
 Photographers = Photographs[Photographs[ArtworkCols.Artist.value] != "Unidentified photographer"][ArtworkCols.Artist.value].value_counts()
 eugene_atget = Photographs[Photographs[ArtworkCols.Artist.value] == "Eugène Atget"]
-print(f"{Photographers.index[0]} {eugene_atget[ArtworkCols.ArtistBio.value].iloc[0]} is the most represented photographer with {Photographers.iloc[0]} photographs\n")
+
 eugene_atget_photographs = eugene_atget[[ArtworkCols.Title.value, ArtworkCols.Date.value]]
 eugene_atget_random_selection:list[dict] = []
 i = 0
@@ -79,6 +73,8 @@ while i <= 5:
         }
     )
     i+=1
+    
+print(f"{Photographers.index[0]} {eugene_atget[ArtworkCols.ArtistBio.value].iloc[0]} is the most represented photographer with {Photographers.iloc[0]} photographs\n")
 print(f"Some of his works include:\n")
 for photograph in eugene_atget_random_selection:
     print(f"    {photograph['title']} ({photograph['date']})\n")
