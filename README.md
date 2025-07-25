@@ -1,6 +1,6 @@
 # What is contemporary art? 
 
-I scoured aroud the web to answer this very question. No one was willing to answer. I have long been absent, please teach me.%   
+I scoured aroud the web to answer this very question. No one was willing to answer. I have long been absent, please teach me.
 
 # run 
 - Install Python 
