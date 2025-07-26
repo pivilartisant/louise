@@ -15,4 +15,5 @@ dependencies = [
   "matplotlib>=3.9.4",
   "ipykernel>=6.30.0",
   "pandas>=2.3.1",
+  "requests>=2.32.4",
 ]
