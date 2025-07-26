@@ -27,7 +27,7 @@ def get_random_image_urls(artworks_list:list[str], num_of_images:int) -> list[st
     return selected_images
 
 def download_image(url:str, path:str):
-    command = ["curl", url,"-o", path+".jpg"]
+    command = ["curl", url,"-o", "data/images/"+path+".jpg"]
     result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
     error = result.stderr
     if result.returncode != 0:
