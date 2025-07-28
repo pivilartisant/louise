@@ -1,9 +1,11 @@
-import os
-import pandas as pd
+import re
 import random
-import matplotlib.pyplot as plt
 from data_class import ArtistCols, ArtworkCols
 from data_frames import artists, artworks
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 
 # Initializing Variables
@@ -68,8 +70,8 @@ while i <= 5:
     r = random.randrange(0,len(eugene_atget_photographs))
     eugene_atget_random_selection.append(
         {
-            "title":eugene_atget_photographs[ArtworkCols.Title.value].iloc[r],
-            "date":eugene_atget_photographs[ArtworkCols.Date.value].iloc[r]
+            ArtworkCols.Title.value:eugene_atget_photographs[ArtworkCols.Title.value].iloc[r],
+            ArtworkCols.Date.value:eugene_atget_photographs[ArtworkCols.Date.value].iloc[r]
         }
     )
     i+=1
@@ -77,10 +79,41 @@ while i <= 5:
 print(f"{Photographers.index[0]} {eugene_atget[ArtworkCols.ArtistBio.value].iloc[0]} is the most represented photographer with {Photographers.iloc[0]} photographs\n")
 print(f"Some of his works include:\n")
 for photograph in eugene_atget_random_selection:
-    print(f"    {photograph['title']} ({photograph['date']})\n")
+    print(f"    {photograph[ArtworkCols.Title.value]} ({photograph[ArtworkCols.Date.value]})\n")
 
+photograph_years = eugene_atget_photographs[ArtworkCols.Date.value]
+print(f"num of years: {len(photograph_years)}")
 
+def clean_artwork_years(items:list[str])-> list[int]:
+    """normalizes artwork years into a list of ints"""
+    years = []
+    for item in items:
+        if not isinstance(item, str):
+            continue
+        match = re.search(r'\b\d{4}\b', item)
+        if match:
+            year = int(match.group())
+            years.append(year)
+        else:
+            continue
+    return years
 
+       
+cleaned_artwork_years = clean_artwork_years(photograph_years)
+def plot_val_counts(cleaned_artwork_years: list[int], figsize=(10, 8), title=None):
+    value_counts = pd.Series(cleaned_artwork_years).value_counts().sort_index()
+    df = pd.DataFrame({'Year': value_counts.index, 'Count': value_counts.values})
+
+    plt.figure(figsize=figsize)
+    sns.barplot(x='Year', y='Count', data=df, color='steelblue')
+    plt.xlabel('Year')
+    plt.ylabel('Number of Artworks')
+    plt.xticks(rotation=45)
+    plt.title(title)
+    plt.tight_layout()
+    plt.show()
+
+plot_val_counts(cleaned_artwork_years, title='Number of Artworks produced by Eugene Atget')
 
 
 
