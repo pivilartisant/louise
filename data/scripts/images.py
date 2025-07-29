@@ -1,18 +1,18 @@
 import random
 import subprocess
-from data_class import ArtworkCols
+from data.scripts.artworks import ArtworkCols
 from data_frames import artworks
 
 # Utility Functions to Get Images
 
-def get_image_urls(artist:str)-> list:
+def get_image_url_by_artist(artist:str)-> list:
     """Extracts image URLs from the artworks DataFrame """
     artworks_by_artists = artworks[artworks[ArtworkCols.Artist.value] == artist]
 
     return artworks_by_artists[ArtworkCols.ImageURL.value].dropna().to_list()
 
 def get_random_image_urls(artworks_list:list[str], num_of_images:int) -> list[str]:
-    """Downloads images for a given number of artworks randomly selecting in the """
+    """Downloads a random images from artwork list"""
     l = len(artworks_list)
     i = 0
     selected_images:list[str] = []
@@ -32,14 +32,3 @@ def download_image(url:str, path:str):
     error = result.stderr
     if result.returncode != 0:
         print(f"Error downloading the image:{error}")
-
-
-target = "Eugène Atget"
-
-target_image_urls = get_image_urls(target)
-
-image_urls = get_random_image_urls(target_image_urls, 5)
-i = 0
-for url in image_urls:
-    download_image(url, str(i))
-    i+=1
