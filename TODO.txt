@@ -1,2 +1,2 @@
-Some observqtion on the data:
-    - years have to be cleaned 
+Some observation on the data:
+    - get most popular medium by decade

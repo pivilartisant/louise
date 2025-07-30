@@ -19,9 +19,23 @@ def get_most_popular_artist_in_classification(classification:str):
     # get all artworks in classification
     classified_artworks = artworks[artworks[ArtworkCols.Classification.value]==classification]
     # get all artists represented in classification
-    artists_in_classification = classified_artworks[ArtworkCols.Artist.value].value_counts()
-    most_popular_artist = artists_in_classification.index[0]
+    artists_in_classification = classified_artworks[ArtworkCols.Artist.value]
+    _artists_in_classification = artists_in_classification.loc[lambda x : (x != "Unknown artist") & (x != "Unidentified photographer")].value_counts()
+    most_popular_artist = _artists_in_classification.index[0]
     return most_popular_artist
+
+# get least popular artist
+def get_least_popular_artist_in_classification(classification:str):
+    # get all artworks in classification
+    classified_artworks = artworks[artworks[ArtworkCols.Classification.value]==classification]
+    # get all artists represented in classification
+    artists_in_classification = classified_artworks[ArtworkCols.Artist.value]
+    _artists_in_classification = artists_in_classification.loc[lambda x : (x != "Unknown artist") & (x != "Unidentified photographer")].value_counts()
+    least_popular_artist = _artists_in_classification.index[len(_artists_in_classification)-1]
+    return least_popular_artist
+
+
+
 
 
     # while i <= 5:

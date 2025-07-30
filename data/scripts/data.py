@@ -1,6 +1,6 @@
 import random
 from data_frames import artists, artworks
-from artists import ArtistCols, get_most_popular_artist_in_classification
+from artists import ArtistCols, get_most_popular_artist_in_classification, get_least_popular_artist_in_classification
 from artworks import ArtworkCols
 
 
@@ -61,6 +61,8 @@ i = 0
 while i < len(classifications_val_count):
     most_popular_artist = get_most_popular_artist_in_classification(classifications_val_count.index[i])
     print(f"The most popular artist for {classifications_val_count.index[i]} is {most_popular_artist}")
+    least_popular_artist = get_least_popular_artist_in_classification(classifications_val_count.index[i])
+    print(f"The least popular artist for {classifications_val_count.index[i]} is {least_popular_artist}")
     i+=1
 
 
