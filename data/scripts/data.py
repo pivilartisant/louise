@@ -1,6 +1,6 @@
 import random
 from data_frames import artists, artworks
-from artists import ArtistCols, get_most_popular_artist_in_classification, get_least_popular_artist_in_classification
+from artists import ArtistCols, get_most_represented_artist_in_classification, get_least_represented_artist_in_classification
 from artworks import ArtworkCols
 
 
@@ -14,15 +14,15 @@ nunique_nationality = 0
 
 # departments
 departments_data_length = 0
-most_popular_department = ""
+most_represented_department = ""
 
 # classification
 classification_data_length = 0
-most_popular_classification = 0 
+most_represented_classification = 0 
 
 # medium 
 medium_data_length = 0
-most_popular_medium = 0 
+most_represented_medium = 0 
 
 
 # print(artists.head())
@@ -54,19 +54,19 @@ labels = [ArtworkCols.Department.value, ArtworkCols.Classification.value, Artwor
 
 for label in labels:
     val_count=artworks[label].value_counts()
-    most_popular_val=val_count.index[0]
-    print(f"The most popular {label} is {most_popular_val} with {val_count.iloc[0]} entries\n")
+    most_represented_val=val_count.index[0]
+    print(f"The most represented {label} is {most_represented_val} with {val_count.iloc[0]} entries\n")
 
 i = 0
 while i < len(classifications_val_count):
-    most_popular_artist = get_most_popular_artist_in_classification(classifications_val_count.index[i])
-    least_popular_artist = get_least_popular_artist_in_classification(classifications_val_count.index[i])
-    if (most_popular_artist) == least_popular_artist:
-            print(f"{most_popular_artist} is the only artist in classification {classifications_val_count.index[i]}")
+    most_represented_artist = get_most_represented_artist_in_classification(classifications_val_count.index[i])
+    least_represented_artist = get_least_represented_artist_in_classification(classifications_val_count.index[i])
+    if (most_represented_artist) == least_represented_artist:
+            print(f"{most_represented_artist} is the only artist in classification {classifications_val_count.index[i]}")
             i+=1
             continue
-    print(f"The most popular artist for {classifications_val_count.index[i]} is {most_popular_artist}")
-    print(f"The least popular artist for {classifications_val_count.index[i]} is {least_popular_artist}")
+    print(f"The most represented artist for {classifications_val_count.index[i]} is {most_represented_artist}")
+    print(f"The least represented artist for {classifications_val_count.index[i]} is {least_represented_artist}")
     i+=1
 
 

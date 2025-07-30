@@ -1,2 +1,2 @@
 Some observation on the data:
-    - get most popular medium by decade
+    - get most represented medium by decade
