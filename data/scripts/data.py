@@ -57,10 +57,11 @@ for label in labels:
     most_popular_val=val_count.index[0]
     print(f"The most popular {label} is {most_popular_val} with {val_count.iloc[0]} entries\n")
 
-
-print(classifications_val_count)
-
-get_most_popular_artist_in_classification(classifications_val_count.index[6])
+i = 0
+while i < len(classifications_val_count):
+    most_popular_artist = get_most_popular_artist_in_classification(classifications_val_count.index[i])
+    print(f"The most popular artist for {classifications_val_count.index[i]} is {most_popular_artist}")
+    i+=1
 
 
 

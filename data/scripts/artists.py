@@ -21,9 +21,9 @@ def get_most_popular_artist_in_classification(classification:str):
     # get all artists represented in classification
     artists_in_classification = classified_artworks[ArtworkCols.Artist.value].value_counts()
     most_popular_artist = artists_in_classification.index[0]
-    print(most_popular_artist)
+    return most_popular_artist
 
-    # i = 0
+
     # while i <= 5:
     #     r = random.randrange(0,len(eugene_atget_photographs))
     #     eugene_atget_random_selection.append(
