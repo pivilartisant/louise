@@ -37,19 +37,24 @@ class ArtworkCols(Enum):
     SeatHeight = "Seat Height (cm)"
     Duration = "Duration (sec.)"
 
-def clean_artwork_years(items:list[str])-> list[int]:
+def clean_artwork_years(items:pd.Series)-> pd.Series:
     """normalizes artwork years into a list of ints"""
     years = []
-    for item in items:
-        if not isinstance(item, str):
+    i=0
+    while i < len(items):
+        if not isinstance(items.index[i], str):
+            i+=1
             continue
-        match = re.search(r'\b\d{4}\b', item)
+        
+        match = re.search(r'\b\d{4}\b', items.index[i])
         if match:
             year = int(match.group())
             years.append(year)
+            i+=1
         else:
+            i+=1
             continue
-    return years
+    return pd.Series(years)
 
 def display_artwork_per_year(cleaned_artwork_years: list[int], figsize=(10, 8), title=None):
     """Displays number of artworks created of the course of given year range"""

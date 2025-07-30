@@ -1,7 +1,7 @@
 import random
 from data_frames import artists, artworks
 from artists import ArtistCols, get_most_represented_artist_in_classification, get_least_represented_artist_in_classification
-from artworks import ArtworkCols
+from artworks import ArtworkCols, clean_artwork_years
 
 
 
@@ -69,6 +69,10 @@ while i < len(classifications_val_count):
     print(f"The least represented artist for {classifications_val_count.index[i]} is {least_represented_artist}")
     i+=1
 
+
+raw_collection_year_range = artworks[ArtworkCols.Date.value].dropna().value_counts()
+collection_year_range=clean_artwork_years(raw_collection_year_range).sort_values()
+print(f"The earliest artwork date sback to: {collection_year_range.iloc[0]} and latest: {collection_year_range.iloc[len(collection_year_range)-1]}")
 
 
 
