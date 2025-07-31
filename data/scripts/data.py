@@ -11,9 +11,10 @@ from artworks import (
     artwork_per_year_histogram,
     artworks_per_year_scatter,
 )
+from classification import get_artwork_for_each_classification, plot_classification_per_year
 
 
-fig, axs = plt.subplots(1, 2, figsize=(14, 6))
+fig, axs = plt.subplots(2, 2, figsize=(14, 6))
 # Initializing Variables
 artist_data_length = 0
 artworks_data_length = 0
@@ -115,18 +116,26 @@ sorted_collection_decade_range = sorted_collection_year_range.groupby(
 
 # each year
 artwork_per_year_histogram(
-    sorted_collection_decade_range, title="Artwork Creation Decade", ax=axs[0]
+    sorted_collection_decade_range, title="Number of Artworks per Decade", ax=axs[0, 0]
 )
 # group by decade
 artworks_per_year_scatter(
-    sorted_collection_year_range, title="Number of Artworks Per Year", ax=axs[1]
+    sorted_collection_year_range, title="Number of Artworks Per Year", ax=axs[0, 1]
 )
 print(
     f"The earliest artwork dates back to: {collection_year_range.iloc[0]} and latest: {collection_year_range.iloc[len(collection_year_range) - 1]}"
 )
 
+# get example for each classification
+# get_artwork_for_each_classification(classifications.unique())
 
-# now i would liek to map out the mediums by decades
+# Plot number classification occurence per year
+raw_classification_and_year = artworks[[ArtworkCols.Classification.value, ArtworkCols.Date.value]].dropna()
+clean_classification_and_year=raw_classification_and_year.loc[:, ArtworkCols.Date.value] = clean_artwork_years(raw_classification_and_year[ArtworkCols.Date.value])
+classification_and_year = clean_classification_and_year.value_counts()
+print(classification_and_year)
+# plot_classification_per_year(classification_and_year, title="Classifications per year", ax=axs[1,1])
+
 
 plt.tight_layout()
 plt.show()
