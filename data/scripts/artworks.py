@@ -42,11 +42,11 @@ def clean_artwork_years(items:pd.Series)-> pd.Series:
     years = []
     i=0
     while i < len(items):
-        if not isinstance(items.index[i], str):
+        if not isinstance(items.iloc[i], str):
             i+=1
             continue
         
-        match = re.search(r'\b\d{4}\b', items.index[i])
+        match = re.search(r'\b\d{4}\b', items.iloc[i])
         if match:
             year = int(match.group())
             years.append(year)
@@ -56,16 +56,16 @@ def clean_artwork_years(items:pd.Series)-> pd.Series:
             continue
     return pd.Series(years)
 
-def display_artwork_per_year(cleaned_artwork_years: list[int], figsize=(10, 8), title=None):
+def display_artwork_per_year(cleaned_artwork_years: list[int], figsize=(10,8), title=None):
     """Displays number of artworks created of the course of given year range"""
-    value_counts = pd.Series(cleaned_artwork_years).value_counts().sort_index()
+    value_counts = pd.Series(cleaned_artwork_years)
     df = pd.DataFrame({'Year': value_counts.index, 'Count': value_counts.values})
 
     plt.figure(figsize=figsize)
     sns.barplot(x='Year', y='Count', data=df, color='steelblue')
-    plt.xlabel('Year')
+    plt.xlabel('Artwork Creation Decade')
     plt.ylabel('Number of Artworks')
-    plt.xticks(rotation=45)
+    plt.xticks(rotation=90)
     plt.title(title)
     plt.tight_layout()
     plt.show()

@@ -1,7 +1,7 @@
 import random
 from data_frames import artists, artworks
 from artists import ArtistCols, get_most_represented_artist_in_classification, get_least_represented_artist_in_classification
-from artworks import ArtworkCols, clean_artwork_years
+from artworks import ArtworkCols, clean_artwork_years, display_artwork_per_year
 
 
 
@@ -70,10 +70,20 @@ while i < len(classifications_val_count):
     i+=1
 
 
-raw_collection_year_range = artworks[ArtworkCols.Date.value].dropna().value_counts()
-collection_year_range=clean_artwork_years(raw_collection_year_range).sort_values()
-print(f"The earliest artwork date sback to: {collection_year_range.iloc[0]} and latest: {collection_year_range.iloc[len(collection_year_range)-1]}")
+raw_collection_year_range = artworks[ArtworkCols.Date.value]
 
+collection_year_range=clean_artwork_years(raw_collection_year_range).sort_values()
+sorted_collection_year_range = collection_year_range.value_counts().sort_index()
+
+# group by decade 
+sorted_collection_decade_range = sorted_collection_year_range.groupby((sorted_collection_year_range.index//10)*10).sum()
+display_artwork_per_year(sorted_collection_decade_range)
+print(f"The earliest artwork dates back to: {collection_year_range.iloc[0]} and latest: {collection_year_range.iloc[len(collection_year_range)-1]}")
+
+# print(collection_year_range.unique())
+# print(collection_year_range.value_counts().sort_index())
+
+# probably will want to plot the results
 
 
 
