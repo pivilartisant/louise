@@ -1,6 +1,7 @@
 from enum import Enum
 from artworks import ArtworkCols
 from data_frames import artworks
+import pandas as pd
 
 
 class ArtistCols(Enum):
@@ -56,3 +57,10 @@ def get_least_represented_artist_in_classification(classification: str):
     # print(f"Some of his works include:\n")
     # for photograph in eugene_atget_random_selection:
     #     print(f"    {photograph[ArtworkCols.Title.value]} ({photograph[ArtworkCols.Date.value]})\n")
+
+
+
+def get_image_url_by_artist(artist: str, df: pd.DataFrame) -> list[str]:
+    """Returns image URLs for every entry for given artist in given DataFrame"""
+    artworks_by_artists = df[df[ArtworkCols.Artist.value] == artist]
+    return artworks_by_artists[ArtworkCols.ImageURL.value].dropna().to_list()
