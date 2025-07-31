@@ -84,12 +84,11 @@ artworks_per_year_scatter(sorted_collection_year_range, title='Number of Artwork
 print(f"The earliest artwork dates back to: {collection_year_range.iloc[0]} and latest: {collection_year_range.iloc[len(collection_year_range)-1]}")
 
 
+# now i would liek to map out the mediums by decades 
+
 plt.tight_layout()
 plt.show()
-# find alternative plots
 
-# print(collection_year_range.unique())
-# print(collection_year_range.value_counts().sort_index())
 
 
 

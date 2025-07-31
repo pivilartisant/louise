@@ -1,7 +1,6 @@
 from enum import Enum
 from artworks import ArtworkCols
 from data_frames import artworks
-import random
 
 class ArtistCols(Enum):
     ConstituentID = "ConstituentID"

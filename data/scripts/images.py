@@ -13,12 +13,12 @@ def get_image_url_by_artist(artist:str)-> list:
 
 def get_random_image_urls(artworks_list:list[str], num_of_images:int) -> list[str]:
     """Downloads a random images from artwork list"""
-    l = len(artworks_list)
+    list_length = len(artworks_list)
     i = 0
     selected_images:list[str] = []
     while i < num_of_images:
         # get target_image_num of image from a random selection of the artworks 
-        selected_images.append(artworks_list[random.randrange(0, l)])
+        selected_images.append(artworks_list[random.randrange(0, list_length)])
         i+=1
     if len(selected_images) == 0:
         print("ERROR NO IMAGE URL'S FOUND RETURNING EMPTY LIST")
