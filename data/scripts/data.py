@@ -1,10 +1,10 @@
-import random
+import matplotlib.pyplot as plt
 from data_frames import artists, artworks
 from artists import ArtistCols, get_most_represented_artist_in_classification, get_least_represented_artist_in_classification
-from artworks import ArtworkCols, clean_artwork_years, display_artwork_per_year
+from artworks import ArtworkCols, clean_artwork_years, artwork_per_year_histogram, artworks_per_year_scatter
 
 
-
+fig, axs = plt.subplots(1, 2, figsize=(14, 6))
 # Initializing Variables
 artist_data_length=0
 artworks_data_length=0
@@ -73,17 +73,24 @@ while i < len(classifications_val_count):
 raw_collection_year_range = artworks[ArtworkCols.Date.value]
 
 collection_year_range=clean_artwork_years(raw_collection_year_range).sort_values()
-sorted_collection_year_range = collection_year_range.value_counts().sort_index()
 
-# group by decade 
+sorted_collection_year_range = collection_year_range.value_counts().sort_index()
 sorted_collection_decade_range = sorted_collection_year_range.groupby((sorted_collection_year_range.index//10)*10).sum()
-display_artwork_per_year(sorted_collection_decade_range)
+
+# each year
+artwork_per_year_histogram(sorted_collection_decade_range, title='Artwork Creation Decade', ax=axs[0])
+# group by decade 
+artworks_per_year_scatter(sorted_collection_year_range, title='Number of Artworks Per Year', ax=axs[1])
 print(f"The earliest artwork dates back to: {collection_year_range.iloc[0]} and latest: {collection_year_range.iloc[len(collection_year_range)-1]}")
+
+
+plt.tight_layout()
+plt.show()
+# find alternative plots
 
 # print(collection_year_range.unique())
 # print(collection_year_range.value_counts().sort_index())
 
-# probably will want to plot the results
 
 
 

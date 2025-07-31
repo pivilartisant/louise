@@ -2,6 +2,7 @@ import re
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+from matplotlib.axes import Axes
 import seaborn as sns
 from enum import Enum
 
@@ -56,16 +57,18 @@ def clean_artwork_years(items:pd.Series)-> pd.Series:
             continue
     return pd.Series(years)
 
-def display_artwork_per_year(cleaned_artwork_years: list[int], figsize=(10,8), title=None):
+def artwork_per_year_histogram(list: list[int], title=None, ax:Axes=None):
     """Displays number of artworks created of the course of given year range"""
-    value_counts = pd.Series(cleaned_artwork_years)
+    value_counts = pd.Series(list)
     df = pd.DataFrame({'Year': value_counts.index, 'Count': value_counts.values})
 
-    plt.figure(figsize=figsize)
-    sns.barplot(x='Year', y='Count', data=df, color='steelblue')
-    plt.xlabel('Artwork Creation Decade')
-    plt.ylabel('Number of Artworks')
-    plt.xticks(rotation=90)
-    plt.title(title)
-    plt.tight_layout()
-    plt.show()
+
+    sns.barplot(data=df, x='Year', y='Count', ax=ax)
+    ax.set_title(title)
+    ax.tick_params(axis='x', rotation=90)
+
+def artworks_per_year_scatter(list: list[int], title=None,ax:Axes=None):
+    value_counts = pd.Series(list)
+    df = pd.DataFrame({'Year': value_counts.index, 'Count': value_counts.values})
+    sns.scatterplot(x=df['Year'], y=df['Count'], color='steelblue')
+    ax.set_title(title)
