@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import pandas as pd
 from data_frames import artists, artworks
 from artists import (
     ArtistCols,
@@ -130,10 +131,14 @@ print(
 # get_artwork_for_each_classification(classifications.unique())
 
 # Plot number classification occurence per year
-raw_classification_and_year = artworks[[ArtworkCols.Classification.value, ArtworkCols.Date.value]].dropna()
-clean_classification_and_year=raw_classification_and_year.loc[:, ArtworkCols.Date.value] = clean_artwork_years(raw_classification_and_year[ArtworkCols.Date.value])
-classification_and_year = clean_classification_and_year.value_counts()
-print(classification_and_year)
+
+classification_and_year = artworks[[ArtworkCols.Classification.value, ArtworkCols.Date.value]].dropna()
+classification_and_year[ArtworkCols.Date.value] = clean_artwork_years(classification_and_year[ArtworkCols.Date.value])
+classification_and_year_freq = classification_and_year.value_counts()
+# recast to dataframe for later operations
+df_classification_and_year = classification_and_year_freq.reset_index(name="count")
+classification_and_year_matrix = df_classification_and_year.pivot_table(index="Date", columns="Classification", values="count", fill_value=0)
+print(classification_and_year_matrix)
 # plot_classification_per_year(classification_and_year, title="Classifications per year", ax=axs[1,1])
 
 
