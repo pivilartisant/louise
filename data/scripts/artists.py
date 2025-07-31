@@ -2,6 +2,7 @@ from enum import Enum
 from artworks import ArtworkCols
 from data_frames import artworks
 
+
 class ArtistCols(Enum):
     ConstituentID = "ConstituentID"
     DisplayName = "DisplayName"
@@ -13,27 +14,33 @@ class ArtistCols(Enum):
     WikiQID = "Wiki QID"
     ULAN = "ULAN"
 
+
 # get most represented artist
-def get_most_represented_artist_in_classification(classification:str):
+def get_most_represented_artist_in_classification(classification: str):
     # get all artworks in classification
-    classified_artworks = artworks[artworks[ArtworkCols.Classification.value]==classification]
+    classified_artworks = artworks[
+        artworks[ArtworkCols.Classification.value] == classification
+    ]
     # get all artists represented in classification
     artists_in_classification = classified_artworks[ArtworkCols.Artist.value]
-    _artists_in_classification = artists_in_classification.loc[lambda x : (x != "Unknown artist") & (x != "Unidentified photographer")].value_counts()
+    _artists_in_classification = artists_in_classification.loc[
+        lambda x: (x != "Unknown artist") & (x != "Unidentified photographer")
+    ].value_counts()
     return _artists_in_classification.index[0]
 
+
 # get least represented artist
-def get_least_represented_artist_in_classification(classification:str):
+def get_least_represented_artist_in_classification(classification: str):
     # get all artworks in classification
-    classified_artworks = artworks[artworks[ArtworkCols.Classification.value]==classification]
+    classified_artworks = artworks[
+        artworks[ArtworkCols.Classification.value] == classification
+    ]
     # get all artists represented in classification
     artists_in_classification = classified_artworks[ArtworkCols.Artist.value]
-    _artists_in_classification = artists_in_classification.loc[lambda x : (x != "Unknown artist") & (x != "Unidentified photographer")].value_counts()
-    return _artists_in_classification.index[len(_artists_in_classification)-1]
-
-
-
-
+    _artists_in_classification = artists_in_classification.loc[
+        lambda x: (x != "Unknown artist") & (x != "Unidentified photographer")
+    ].value_counts()
+    return _artists_in_classification.index[len(_artists_in_classification) - 1]
 
     # while i <= 5:
     #     r = random.randrange(0,len(eugene_atget_photographs))

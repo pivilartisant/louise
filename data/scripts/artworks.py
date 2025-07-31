@@ -5,6 +5,7 @@ import seaborn as sns
 from enum import Enum
 from typing import Optional
 
+
 class ArtworkCols(Enum):
     Title = "Title"
     Artist = "Artist"
@@ -37,43 +38,47 @@ class ArtworkCols(Enum):
     SeatHeight = "Seat Height (cm)"
     Duration = "Duration (sec.)"
 
-def clean_artwork_years(items:pd.Series)-> pd.Series:
+
+def clean_artwork_years(items: pd.Series) -> pd.Series:
     """normalizes artwork years into a list of ints"""
     years = []
-    i=0
+    i = 0
     while i < len(items):
         if not isinstance(items.iloc[i], str):
-            i+=1
+            i += 1
             continue
-        
-        match = re.search(r'\b\d{4}\b', items.iloc[i])
+
+        match = re.search(r"\b\d{4}\b", items.iloc[i])
         if match:
             year = int(match.group())
             years.append(year)
-            i+=1
+            i += 1
         else:
-            i+=1
+            i += 1
             continue
     return pd.Series(years)
 
-def artwork_per_year_histogram(ax: Axes,
+
+def artwork_per_year_histogram(
+    ax: Axes,
     year_counts: list[int],
     title: Optional[str] = None,
 ) -> None:
     """Displays number of artworks created of the course of given year range"""
     value_counts = pd.Series(year_counts)
-    df = pd.DataFrame({'Year': value_counts.index, 'Count': value_counts.values})
+    df = pd.DataFrame({"Year": value_counts.index, "Count": value_counts.values})
 
-
-    sns.barplot(data=df, x='Year', y='Count', ax=ax)
+    sns.barplot(data=df, x="Year", y="Count", ax=ax)
     ax.set_title(title)
-    ax.tick_params(axis='x', rotation=90)
+    ax.tick_params(axis="x", rotation=90)
 
-def artworks_per_year_scatter(ax: Axes,
+
+def artworks_per_year_scatter(
+    ax: Axes,
     year_counts: list[int],
     title: Optional[str] = None,
 ) -> None:
     value_counts = pd.Series(year_counts)
-    df = pd.DataFrame({'Year': value_counts.index, 'Count': value_counts.values})
-    sns.scatterplot(x=df['Year'], y=df['Count'], color='steelblue')
+    df = pd.DataFrame({"Year": value_counts.index, "Count": value_counts.values})
+    sns.scatterplot(x=df["Year"], y=df["Count"], color="steelblue")
     ax.set_title(title)
