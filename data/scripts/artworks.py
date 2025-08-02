@@ -1,4 +1,3 @@
-import re
 import pandas as pd
 import seaborn as sns
 from matplotlib.axes import Axes
@@ -39,26 +38,7 @@ class ArtworkCols(Enum):
     Duration = "Duration (sec.)"
 
 
-def clean_artwork_years(items: pd.Series) -> pd.Series:
-    """Normalizes artwork years into a Series of integers with matching index"""
-    cleaned_years = []
-
-    for item in items:
-        if isinstance(item, str):
-            match = re.search(r"\b\d{4}\b", item)
-            if match:
-                cleaned_years.append(int(match.group()))
-            else:
-                cleaned_years.append(None)
-        else:
-            cleaned_years.append(None)
-
-    return pd.Series(
-        cleaned_years, index=items.index, dtype="Int64"
-    )  # Nullable integer type
-
-
-def artwork_per_year_histogram(
+def entry_time_series_barplot(
     year_counts: list[int],
     title: Optional[str] = None,
     ax: Axes = None,
@@ -72,7 +52,7 @@ def artwork_per_year_histogram(
     ax.tick_params(axis="x", rotation=90)
 
 
-def created_acquired_year_scatter(
+def overlay_time_series_lineplot(
     created_series: list[int],
     aquired_series: list[int],
     title: Optional[str] = None,

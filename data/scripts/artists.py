@@ -1,6 +1,6 @@
 from enum import Enum
-from artworks import ArtworkCols
-from data_frames import artworks
+from data.scripts.artworks import ArtworkCols
+from data.scripts.utils.data_frames import artworks
 import pandas as pd
 
 
@@ -43,23 +43,8 @@ def get_least_represented_artist_in_classification(classification: str):
     ].value_counts()
     return _artists_in_classification.index[len(_artists_in_classification) - 1]
 
-    # while i <= 5:
-    #     r = random.randrange(0,len(eugene_atget_photographs))
-    #     eugene_atget_random_selection.append(
-    #         {
-    #             ArtworkCols.Title.value:eugene_atget_photographs[ArtworkCols.Title.value].iloc[r],
-    #             ArtworkCols.Date.value:eugene_atget_photographs[ArtworkCols.Date.value].iloc[r]
-    #         }
-    #     )
-    #     i+=1
 
-    # print(f"{Photographers.index[0]} {eugene_atget[ArtworkCols.ArtistBio.value].iloc[0]} is the most represented photographer with {Photographers.iloc[0]} photographs\n")
-    # print(f"Some of his works include:\n")
-    # for photograph in eugene_atget_random_selection:
-    #     print(f"    {photograph[ArtworkCols.Title.value]} ({photograph[ArtworkCols.Date.value]})\n")
-
-
-def get_image_url_by_artist(artist: str, df: pd.DataFrame) -> list[str]:
+def get_image_url_of_entries_by_artist(artist: str, df: pd.DataFrame) -> list[str]:
     """Returns image URLs for every entry for given artist in given DataFrame"""
     artworks_by_artists = df[df[ArtworkCols.Artist.value] == artist]
     return artworks_by_artists[ArtworkCols.ImageURL.value].dropna().to_list()

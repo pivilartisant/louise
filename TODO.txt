@@ -3,3 +3,6 @@ Some observation on the data:
     - classification overtime
     - aquisition overtime 
     - aquisition per classification overtime
+
+TODO:
+    - plot get_most_and_least_represented_artist_in_each_classification
