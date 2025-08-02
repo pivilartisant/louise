@@ -1,2 +1,5 @@
 Some observation on the data:
-    - get most represented medium by decade
+    - artworks creation over time
+    - classification overtime
+    - aquisition overtime 
+    - aquisition per classification overtime
