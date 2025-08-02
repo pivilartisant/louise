@@ -29,12 +29,10 @@ def get_image_url_by_classification(classification: str):
     artworks_by_classification_with_url = artworks_by_classification[columns_to_keep].dropna(subset=[ArtworkCols.ImageURL.value])
     return artworks_by_classification_with_url
 
-def plot_classification_per_year(year_counts: list[int],
+def plot_classification_per_year(df: list[int],
+    cols:list[str],
     title: Optional[str] = None,
     ax: Axes = None,
 ) -> None:
-    # value_counts = pd.Series(year_counts)
-    # df = pd.DataFrame({"Classification": value_counts.index, "Count": value_counts.values})
-    df = year_counts
-    sns.scatterplot(x=df["Classification"], y=df["Date"], color="steelblue")
+    sns.lineplot(data=df[cols], palette=['pink', 'blue', 'purple', 'green', 'red'])
     ax.set_title(title)
