@@ -47,9 +47,11 @@ overlay_time_series_lineplot(
 entries_classifications_by_date = artworks[
     [ArtworkCols.Classification.value, ArtworkCols.Date.value]
 ].dropna()
+
 entries_classifications_by_date[ArtworkCols.Date.value] = clean_years(
     entries_classifications_by_date[ArtworkCols.Date.value]
 )
+
 entries_classifications_by_date_freq = entries_classifications_by_date.value_counts()
 # recast to dataframe for later operations
 
@@ -65,12 +67,45 @@ classification_by_year_lineplot(
     title="Most represented classifications by year",
     ax=axs[1, 0],
 )
+
+# Plot number classification occurence per year
+entries_classifications_by_date = artworks[
+    [ArtworkCols.Classification.value, ArtworkCols.DateAcquired.value]
+].dropna()
+
+entries_classifications_by_date[ArtworkCols.DateAcquired.value] = clean_years(
+    entries_classifications_by_date[ArtworkCols.DateAcquired.value]
+)
+
+entries_classifications_by_date_freq = entries_classifications_by_date.value_counts()
+# recast to dataframe for later operations
+
+entries_classifications_by_date = entries_classifications_by_date_freq.reset_index(
+    name="count"
+)
+entries_classifications_by_date_matrix = entries_classifications_by_date.pivot_table(
+    index="DateAcquired", columns="Classification", values="count", fill_value=0
+)
+classification_by_year_lineplot(
+    entries_classifications_by_date_matrix,
+    ["Photograph", "Print", "Illustrated Book", "Drawing", "Design"],
+    title="Most represented classifications by date aquired",
+    ax=axs[1, 1],
+)
+# todo add date acquired classifications 
+
+plt.tight_layout()
+plt.show()
+plt.close()
+fig, axs = plt.subplots(2, 2, figsize=(14, 6))
+
+# todo: add modernist classification by year 
 classification_by_year_lineplot(
     entries_classifications_by_date_matrix,
     ["Media", "Audio", "Video", "Multiple", "Installation"],
     title="Post-modernist classifications by year",
     ax=axs[1, 1],
 )
-
 plt.tight_layout()
 plt.show()
+plt.close()
