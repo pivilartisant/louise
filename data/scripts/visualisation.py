@@ -10,7 +10,7 @@ from artworks import (
 from classification import classification_by_year_lineplot
 
 # This script provides an overview of MOMA entries
-# Note this queries the artworks which should be broadly considered as a "meseum collection entry"
+# Note this queries the artworks which should be broadly considered as a "museum collection entry"
 
 fig, axs = plt.subplots(2, 2, figsize=(14, 6))
 
