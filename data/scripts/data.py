@@ -10,7 +10,7 @@ from artworks import (
     ArtworkCols,
     clean_artwork_years,
     artwork_per_year_histogram,
-    artworks_per_year_scatter,
+    created_acquired_year_scatter,
 )
 from classification import get_artwork_for_each_classification, plot_classification_per_year
 
@@ -106,22 +106,35 @@ while i < len(classifications_val_count):
     i += 1
 
 
+# get data
 raw_collection_year_range = artworks[ArtworkCols.Date.value]
+raw_date_acquired_year_range = artworks[
+    (artworks[ArtworkCols.Classification.value] != 'Frank Lloyd Wright Archive') &
+    (artworks[ArtworkCols.Classification.value] != 'Mies van der Rohe Archive')
+]
+raw_date_acquired_year_range = raw_date_acquired_year_range[ArtworkCols.DateAcquired.value]
+# clean years to YYYY format, drop empty and sort chronologically 
+collection_year_range = clean_artwork_years(raw_collection_year_range).dropna().sort_values()
+date_acquired_year_range = clean_artwork_years(raw_date_acquired_year_range).dropna().sort_values()
 
-collection_year_range = clean_artwork_years(raw_collection_year_range).sort_values()
 
+# gets count for entry and sort chronologically
 sorted_collection_year_range = collection_year_range.value_counts().sort_index()
+sorted_date_acquired_year_range = date_acquired_year_range.value_counts().sort_index()
+# df_sorted_date_aquired_year_range = sorted_date_aquired_year_range.reset_index(name='count')
+# print(df_sorted_date_aquired_year_range)
+# group by decade 
 sorted_collection_decade_range = sorted_collection_year_range.groupby(
     (sorted_collection_year_range.index // 10) * 10
 ).sum()
 
 # each year
 artwork_per_year_histogram(
-    sorted_collection_decade_range, title="Number of Artworks per Decade", ax=axs[0, 0]
+    sorted_collection_decade_range, title="Created Entries per Decade", ax=axs[0, 0]
 )
 # group by decade
-artworks_per_year_scatter(
-    sorted_collection_year_range, title="Number of Artworks Per Year", ax=axs[0, 1]
+created_acquired_year_scatter(
+    sorted_collection_year_range, sorted_date_acquired_year_range, title="Created Entries Per Year/Date Acquired", ax=axs[0, 1]
 )
 print(
     f"The earliest artwork dates back to: {collection_year_range.iloc[0]} and latest: {collection_year_range.iloc[len(collection_year_range) - 1]}"
@@ -138,9 +151,7 @@ classification_and_year_freq = classification_and_year.value_counts()
 # recast to dataframe for later operations
 df_classification_and_year = classification_and_year_freq.reset_index(name="count")
 classification_and_year_matrix = df_classification_and_year.pivot_table(index="Date", columns="Classification", values="count", fill_value=0)
-print(classification_and_year_matrix)
-# plot_classification_per_year(classification_and_year, title="Classifications per year", ax=axs[1,1])
-
+plot_classification_per_year(classification_and_year_matrix,['Photograph','Print', 'Illustrated Book', 'Drawing', 'Design' ], title="Mapping of most represented classifications per year", ax=axs[1,1])
 
 plt.tight_layout()
 plt.show()

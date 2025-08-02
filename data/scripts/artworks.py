@@ -71,12 +71,15 @@ def artwork_per_year_histogram(
     ax.tick_params(axis="x", rotation=90)
 
 
-def artworks_per_year_scatter(
-    year_counts: list[int],
+def created_acquired_year_scatter(
+    created_series: list[int],
+    aquired_series: list[int],
     title: Optional[str] = None,
     ax: Axes = None,
 ) -> None:
-    value_counts = pd.Series(year_counts)
-    df = pd.DataFrame({"Year": value_counts.index, "Count": value_counts.values})
-    sns.scatterplot(x=df["Year"], y=df["Count"], color="forestgreen", ax=ax)
+    created_df = pd.DataFrame({"Year": created_series.index, "Count": created_series.values})
+    aquired_df = pd.DataFrame({"Year": aquired_series.index, "Count": aquired_series.values})
+    # sns.lineplot(x=created_df["Year"], y=created_df["Count"], color="forestgreen", ax=ax)
+    sns.lineplot(x=created_df["Year"], y=created_df["Count"], color="forestgreen", ax=ax)
+    sns.lineplot(x=aquired_df["Year"], y=aquired_df["Count"], color="pink", ax=ax)
     ax.set_title(title)
