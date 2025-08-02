@@ -79,7 +79,6 @@ def created_acquired_year_scatter(
 ) -> None:
     created_df = pd.DataFrame({"Year": created_series.index, "Count": created_series.values})
     aquired_df = pd.DataFrame({"Year": aquired_series.index, "Count": aquired_series.values})
-    # sns.lineplot(x=created_df["Year"], y=created_df["Count"], color="forestgreen", ax=ax)
     sns.lineplot(x=created_df["Year"], y=created_df["Count"], color="forestgreen", ax=ax)
     sns.lineplot(x=aquired_df["Year"], y=aquired_df["Count"], color="pink", ax=ax)
     ax.set_title(title)

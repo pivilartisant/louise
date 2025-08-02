@@ -108,11 +108,7 @@ while i < len(classifications_val_count):
 
 # get data
 raw_collection_year_range = artworks[ArtworkCols.Date.value]
-raw_date_acquired_year_range = artworks[
-    (artworks[ArtworkCols.Classification.value] != 'Frank Lloyd Wright Archive') &
-    (artworks[ArtworkCols.Classification.value] != 'Mies van der Rohe Archive')
-]
-raw_date_acquired_year_range = raw_date_acquired_year_range[ArtworkCols.DateAcquired.value]
+raw_date_acquired_year_range = artworks[ArtworkCols.DateAcquired.value]
 # clean years to YYYY format, drop empty and sort chronologically 
 collection_year_range = clean_artwork_years(raw_collection_year_range).dropna().sort_values()
 date_acquired_year_range = clean_artwork_years(raw_date_acquired_year_range).dropna().sort_values()
@@ -140,18 +136,17 @@ print(
     f"The earliest artwork dates back to: {collection_year_range.iloc[0]} and latest: {collection_year_range.iloc[len(collection_year_range) - 1]}"
 )
 
-# get example for each classification
-# get_artwork_for_each_classification(classifications.unique())
-
 # Plot number classification occurence per year
 
 classification_and_year = artworks[[ArtworkCols.Classification.value, ArtworkCols.Date.value]].dropna()
 classification_and_year[ArtworkCols.Date.value] = clean_artwork_years(classification_and_year[ArtworkCols.Date.value])
 classification_and_year_freq = classification_and_year.value_counts()
 # recast to dataframe for later operations
+
 df_classification_and_year = classification_and_year_freq.reset_index(name="count")
 classification_and_year_matrix = df_classification_and_year.pivot_table(index="Date", columns="Classification", values="count", fill_value=0)
-plot_classification_per_year(classification_and_year_matrix,['Photograph','Print', 'Illustrated Book', 'Drawing', 'Design' ], title="Mapping of most represented classifications per year", ax=axs[1,1])
+plot_classification_per_year(classification_and_year_matrix,['Photograph','Print', 'Illustrated Book', 'Drawing', 'Design' ], title="Mapping of most represented classifications per year", ax=axs[1,0])
+plot_classification_per_year(classification_and_year_matrix,['Media','Audio', 'Video', 'Multiple', 'Installation' ], title="Mapping of post-modernist classifications per year", ax=axs[1,1])
 
 plt.tight_layout()
 plt.show()
