@@ -43,9 +43,12 @@ overlay_time_series_lineplot(
     ax=axs[0, 1],
 )
 
-##### Classification by date created
 
-# Plot number classification occurence per year
+
+# Todo: create a function where long dataframe gets outputed to wide dataframe
+
+
+### Classification by date created ###
 entries_classifications_by_date = artworks[
     [ArtworkCols.Classification.value, ArtworkCols.Date.value]
 ].dropna()
@@ -70,20 +73,8 @@ entries_classifications_by_date_matrix = entries_classifications_by_date.pivot_t
     index="Date", columns="Classification", values="count", fill_value=0
 )
 
-classification_totals_by_creation_date = entries_classifications_by_date_matrix.sum(axis=0)
-
-top5_classifications_by_date_created = classification_totals_by_creation_date.sort_values(ascending=False).head(5).index.tolist()
-
-classification_by_year_lineplot(
-    entries_classifications_by_date_matrix,
-    top5_classifications_by_date_created,
-    title="Most represented classifications by year",
-    ax=axs[1, 0],
-)
 
 ### classification by date acquired ###
-
-# Plot number classification occurence per year
 entries_classifications_by_date_acquired = artworks[
     [ArtworkCols.Classification.value, ArtworkCols.DateAcquired.value]
 ].dropna()
@@ -105,6 +96,21 @@ entries_classifications_by_date_acquired_matrix = entries_classifications_by_dat
     index="DateAcquired", columns="Classification", values="count", fill_value=0
 )
 
+
+### Get top 5 classification in count
+classification_totals_by_creation_date = entries_classifications_by_date_matrix.sum(axis=0)
+
+top5_classifications_by_date_created = classification_totals_by_creation_date.sort_values(ascending=False).head(5).index.tolist()
+
+# Most represented classifications by year
+classification_by_year_lineplot(
+    entries_classifications_by_date_matrix,
+    top5_classifications_by_date_created,
+    title="Most represented classifications by year",
+    ax=axs[1, 0],
+)
+
+# Most represented classifications by date aquired
 classification_by_year_lineplot(
     entries_classifications_by_date_acquired_matrix,
     top5_classifications_by_date_created,
@@ -116,7 +122,8 @@ plt.tight_layout()
 plt.show()
 plt.close()
 
-# Plot of classification created acquired by year
+### Plot overall classification with 1000 entries
+
 fig, axs = plt.subplots(2, 1, figsize=(14, 8))
 
 
@@ -133,6 +140,7 @@ all_classification_by_year_lineplot(
 
 window = 3
 
+# rolling average plot
 all_classification_by_year_lineplot(
     filtered_entries_classifications_by_date_matrix.rolling(window=window).mean(),
     filtered_entries_classifications_by_date_matrix.columns,
@@ -140,24 +148,13 @@ all_classification_by_year_lineplot(
     ax=axs[1],
 )
 
-# window = 3
 
-# classification_totals = entries_classifications_by_date_acquired_matrix.sum(axis=0)
-# relevant_classifications = classification_totals[classification_totals >= 500].index
-# filtered_entries_classifications_by_date_acquired_matrix = entries_classifications_by_date_acquired_matrix[relevant_classifications].rolling(window=window).mean()
-
-
-# # identofy trends overtime usng a rolling window of 10 years ad applyng mean
-# all_classification_by_year_lineplot(
-#     filtered_entries_classifications_by_date_acquired_matrix,
-#     filtered_entries_classifications_by_date_acquired_matrix.columns,
-#     title=f'{window}-Year Rolling Average of Classification Acquisitions',
-#     ax=axs[1],
-# )
 plt.tight_layout()
 plt.show()
 plt.close()
 
+
+### Ploto specific classification defined by art historical terms
 fig, axs = plt.subplots(2, 2, figsize=(14, 6))
 
 # todo: add modernist classification by year 
