@@ -59,7 +59,6 @@ def get_least_represented_artist_in_classification(classification: str):
     #     print(f"    {photograph[ArtworkCols.Title.value]} ({photograph[ArtworkCols.Date.value]})\n")
 
 
-
 def get_image_url_by_artist(artist: str, df: pd.DataFrame) -> list[str]:
     """Returns image URLs for every entry for given artist in given DataFrame"""
     artworks_by_artists = df[df[ArtworkCols.Artist.value] == artist]

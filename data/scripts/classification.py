@@ -4,7 +4,6 @@ from artworks import ArtworkCols
 from images import download_image
 from typing import Optional
 from matplotlib.axes import Axes
-import pandas as pd
 import seaborn as sns
 
 dir = "classification_examples"

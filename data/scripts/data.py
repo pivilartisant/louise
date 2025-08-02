@@ -1,5 +1,4 @@
 import matplotlib.pyplot as plt
-import pandas as pd
 from data_frames import artists, artworks
 from artists import (
     ArtistCols,
@@ -12,7 +11,7 @@ from artworks import (
     artwork_per_year_histogram,
     created_acquired_year_scatter,
 )
-from classification import get_artwork_for_each_classification, plot_classification_per_year
+from classification import plot_classification_per_year
 
 
 fig, axs = plt.subplots(2, 2, figsize=(14, 6))

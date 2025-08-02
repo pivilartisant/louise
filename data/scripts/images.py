@@ -3,6 +3,7 @@ import random
 import re
 import subprocess
 
+
 def get_random_image_urls(artworks_list: list[str], num_of_images: int) -> list[str]:
     """Downloads a random images from artwork list"""
     list_length = len(artworks_list)
@@ -18,18 +19,21 @@ def get_random_image_urls(artworks_list: list[str], num_of_images: int) -> list[
 
     return selected_images
 
+
 def sanitize_path(path: str) -> str:
     """Converts to lowercase, removes special characters, replaces spaces with underscores"""
     path = path.lower()
-    path = re.sub(r'[^\w\s-]', '', path)  # Remove special chars except alphanum, space, hyphen
-    path = re.sub(r'\s+', '_', path)      # Replace spaces with underscores
-    path = path.strip('_')                # Remove leading/trailing underscores
+    path = re.sub(
+        r"[^\w\s-]", "", path
+    )  # Remove special chars except alphanum, space, hyphen
+    path = re.sub(r"\s+", "_", path)  # Replace spaces with underscores
+    path = path.strip("_")  # Remove leading/trailing underscores
     return path
 
 
-def download_image(url: str, dir:str, path: str):
+def download_image(url: str, dir: str, path: str):
     path = sanitize_path(path)
-    command = ["curl", url, "-o", "data/images/" + dir + "/"+ path + ".jpg"]
+    command = ["curl", url, "-o", "data/images/" + dir + "/" + path + ".jpg"]
     result = subprocess.run(
         command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True
     )
