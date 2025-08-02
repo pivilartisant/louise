@@ -50,6 +50,12 @@ entries_classifications_by_date = artworks[
     [ArtworkCols.Classification.value, ArtworkCols.Date.value]
 ].dropna()
 
+# Filtering out the Mies van der Rohe Archive & Frank Lloyd Wright Archive 
+entries_classifications_by_date = entries_classifications_by_date[
+    entries_classifications_by_date[ArtworkCols.Classification.value]
+    .apply(lambda x: (x != "Mies van der Rohe Archive") & (x != "Frank Lloyd Wright Archive"))
+]
+
 entries_classifications_by_date[ArtworkCols.Date.value] = clean_years(
     entries_classifications_by_date[ArtworkCols.Date.value]
 )
@@ -63,27 +69,34 @@ entries_classifications_by_date = entries_classifications_by_date_freq.reset_ind
 entries_classifications_by_date_matrix = entries_classifications_by_date.pivot_table(
     index="Date", columns="Classification", values="count", fill_value=0
 )
+
+classification_totals_by_creation_date = entries_classifications_by_date_matrix.sum(axis=0)
+
+top5_classifications_by_date_created = classification_totals_by_creation_date.sort_values(ascending=False).head(5).index.tolist()
+
 classification_by_year_lineplot(
     entries_classifications_by_date_matrix,
-    ["Photograph", "Print", "Illustrated Book", "Drawing", "Design"],
+    top5_classifications_by_date_created,
     title="Most represented classifications by year",
     ax=axs[1, 0],
 )
 
-### classification by date acquired
+### classification by date acquired ###
 
 # Plot number classification occurence per year
 entries_classifications_by_date_acquired = artworks[
     [ArtworkCols.Classification.value, ArtworkCols.DateAcquired.value]
 ].dropna()
 
+
 entries_classifications_by_date_acquired[ArtworkCols.DateAcquired.value] = clean_years(
     entries_classifications_by_date_acquired[ArtworkCols.DateAcquired.value]
 )
 
 entries_classifications_by_date_acquired_freq = entries_classifications_by_date_acquired.value_counts()
-# recast to dataframe for later operations
 
+
+# recast to dataframe for later operations
 entries_classifications_by_date_acquired = entries_classifications_by_date_acquired_freq.reset_index(
     name="count"
 )
@@ -91,9 +104,10 @@ entries_classifications_by_date_acquired = entries_classifications_by_date_acqui
 entries_classifications_by_date_acquired_matrix = entries_classifications_by_date_acquired.pivot_table(
     index="DateAcquired", columns="Classification", values="count", fill_value=0
 )
+
 classification_by_year_lineplot(
     entries_classifications_by_date_acquired_matrix,
-    ["Photograph", "Print", "Illustrated Book", "Drawing", "Design"],
+    top5_classifications_by_date_created,
     title="Most represented classifications by date aquired",
     ax=axs[1, 1],
 )
@@ -102,15 +116,44 @@ plt.tight_layout()
 plt.show()
 plt.close()
 
-# add full plot of classification created by year and acquiredf by year
-fig, ax = plt.subplots(1, 1, figsize=(14, 8))
+# Plot of classification created acquired by year
+fig, axs = plt.subplots(2, 1, figsize=(14, 8))
+
+
+# filtering out classifications with a minimum of 1000 occurences
+relevant_classifications_by_creation_date = classification_totals_by_creation_date[classification_totals_by_creation_date >= 1000].index
+filtered_entries_classifications_by_date_matrix = entries_classifications_by_date_matrix[relevant_classifications_by_creation_date]
+
 all_classification_by_year_lineplot(
-    entries_classifications_by_date_matrix,
-    entries_classifications_by_date_matrix.columns,
-    title="Classifications by Date",
-    ax=ax,
+    filtered_entries_classifications_by_date_matrix,
+    filtered_entries_classifications_by_date_matrix.columns,
+    title="Yearly Distribution of Artwork Classifications by Creation Date",
+    ax=axs[0],
 )
 
+window = 3
+
+all_classification_by_year_lineplot(
+    filtered_entries_classifications_by_date_matrix.rolling(window=window).mean(),
+    filtered_entries_classifications_by_date_matrix.columns,
+    title=f'{window}-Year Rolling Average of Classifications by Creation Date',
+    ax=axs[1],
+)
+
+# window = 3
+
+# classification_totals = entries_classifications_by_date_acquired_matrix.sum(axis=0)
+# relevant_classifications = classification_totals[classification_totals >= 500].index
+# filtered_entries_classifications_by_date_acquired_matrix = entries_classifications_by_date_acquired_matrix[relevant_classifications].rolling(window=window).mean()
+
+
+# # identofy trends overtime usng a rolling window of 10 years ad applyng mean
+# all_classification_by_year_lineplot(
+#     filtered_entries_classifications_by_date_acquired_matrix,
+#     filtered_entries_classifications_by_date_acquired_matrix.columns,
+#     title=f'{window}-Year Rolling Average of Classification Acquisitions',
+#     ax=axs[1],
+# )
 plt.tight_layout()
 plt.show()
 plt.close()
@@ -118,10 +161,18 @@ plt.close()
 fig, axs = plt.subplots(2, 2, figsize=(14, 6))
 
 # todo: add modernist classification by year 
+# todo: add modernist classification by date acquired 
+
+classification_by_year_lineplot(
+    entries_classifications_by_date_matrix,
+    ["Media", "Audio", "Video", "Multiple", "Installation"],
+    title="Post-modernist classifications by Year",
+    ax=axs[1, 0],
+)
 classification_by_year_lineplot(
     entries_classifications_by_date_acquired_matrix,
     ["Media", "Audio", "Video", "Multiple", "Installation"],
-    title="Post-modernist classifications by year",
+    title="Post-modernist Classifications by Date Acquired",
     ax=axs[1, 1],
 )
 plt.tight_layout()
