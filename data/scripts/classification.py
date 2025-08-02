@@ -57,6 +57,30 @@ def classification_by_year_lineplot(
     ax.set_title(title)
 
 
+def all_classification_by_year_lineplot(
+    df: list[int],
+    cols: list[str],
+    title: Optional[str] = None,
+    ax: Axes = None,
+) -> None:
+    palette = sns.color_palette("husl", n_colors=len(cols))
+    sns.lineplot(
+        data=df[cols], palette=palette, ax=ax
+    )
+    ax.legend(
+        bbox_to_anchor=(0.5, -0.15),  # move below plot
+        loc='upper center',
+        ncol=4,                       
+        fontsize=8,
+        title='Classification',
+        title_fontsize=10,
+        frameon=False,
+    )
+    ax.grid(True)
+    ax.set_title(title)
+
+
+
 ####### CLASSIFICATION DATA ANALYSIS
 def get_most_and_least_represented_artist_in_each_classification():
     classifications_val_count = classifications.value_counts()

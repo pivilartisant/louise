@@ -6,3 +6,4 @@ Some observation on the data:
 
 TODO:
     - plot get_most_and_least_represented_artist_in_each_classification
+    - improve overall classification my year

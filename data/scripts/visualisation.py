@@ -7,7 +7,7 @@ from artworks import (
     entry_time_series_barplot,
     overlay_time_series_lineplot,
 )
-from classification import classification_by_year_lineplot
+from classification import classification_by_year_lineplot, all_classification_by_year_lineplot
 
 # This script provides an overview of MOMA entries
 # Note this queries the artworks which should be broadly considered as a "museum collection entry"
@@ -43,6 +43,8 @@ overlay_time_series_lineplot(
     ax=axs[0, 1],
 )
 
+##### Classification by date created
+
 # Plot number classification occurence per year
 entries_classifications_by_date = artworks[
     [ArtworkCols.Classification.value, ArtworkCols.Date.value]
@@ -68,40 +70,56 @@ classification_by_year_lineplot(
     ax=axs[1, 0],
 )
 
+### classification by date acquired
+
 # Plot number classification occurence per year
-entries_classifications_by_date = artworks[
+entries_classifications_by_date_acquired = artworks[
     [ArtworkCols.Classification.value, ArtworkCols.DateAcquired.value]
 ].dropna()
 
-entries_classifications_by_date[ArtworkCols.DateAcquired.value] = clean_years(
-    entries_classifications_by_date[ArtworkCols.DateAcquired.value]
+entries_classifications_by_date_acquired[ArtworkCols.DateAcquired.value] = clean_years(
+    entries_classifications_by_date_acquired[ArtworkCols.DateAcquired.value]
 )
 
-entries_classifications_by_date_freq = entries_classifications_by_date.value_counts()
+entries_classifications_by_date_acquired_freq = entries_classifications_by_date_acquired.value_counts()
 # recast to dataframe for later operations
 
-entries_classifications_by_date = entries_classifications_by_date_freq.reset_index(
+entries_classifications_by_date_acquired = entries_classifications_by_date_acquired_freq.reset_index(
     name="count"
 )
-entries_classifications_by_date_matrix = entries_classifications_by_date.pivot_table(
+
+entries_classifications_by_date_acquired_matrix = entries_classifications_by_date_acquired.pivot_table(
     index="DateAcquired", columns="Classification", values="count", fill_value=0
 )
 classification_by_year_lineplot(
-    entries_classifications_by_date_matrix,
+    entries_classifications_by_date_acquired_matrix,
     ["Photograph", "Print", "Illustrated Book", "Drawing", "Design"],
     title="Most represented classifications by date aquired",
     ax=axs[1, 1],
 )
-# todo add date acquired classifications 
 
 plt.tight_layout()
 plt.show()
 plt.close()
+
+# add full plot of classification created by year and acquiredf by year
+fig, ax = plt.subplots(1, 1, figsize=(14, 8))
+all_classification_by_year_lineplot(
+    entries_classifications_by_date_matrix,
+    entries_classifications_by_date_matrix.columns,
+    title="Classifications by Date",
+    ax=ax,
+)
+
+plt.tight_layout()
+plt.show()
+plt.close()
+
 fig, axs = plt.subplots(2, 2, figsize=(14, 6))
 
 # todo: add modernist classification by year 
 classification_by_year_lineplot(
-    entries_classifications_by_date_matrix,
+    entries_classifications_by_date_acquired_matrix,
     ["Media", "Audio", "Video", "Multiple", "Installation"],
     title="Post-modernist classifications by year",
     ax=axs[1, 1],
