@@ -19,3 +19,20 @@ def clean_years(items: pd.Series) -> pd.Series:
     return pd.Series(
         cleaned_years, index=items.index, dtype="Int64"
     )  # Nullable integer type
+
+
+def clean_classification_dataframe(df: pd.DataFrame, df_date_col: str) -> pd.DataFrame:
+    """Transforms long dataframe to wide dataframe. df: the dataframe you want to transform. df_date_col:the name of the column to be formated using clean_years()"""
+    df = df.dropna(subset=[df_date_col]).copy()
+    df[df_date_col] = clean_years(df[df_date_col])
+    df = df.value_counts()
+    df = df.reset_index(name="count")
+    return df.pivot_table(
+        index=df_date_col, columns="Classification", values="count", fill_value=0
+    )
+
+
+def get_most_in_dataframe(df: pd.DataFrame, head: int) -> list[any]:
+    sum = df.sum(axis=0)
+
+    return sum.sort_values(ascending=False).head(head).index.tolist()
