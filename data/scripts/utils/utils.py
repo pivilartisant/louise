@@ -3,7 +3,7 @@ import pandas as pd
 
 
 def clean_years(items: pd.Series) -> pd.Series:
-    """Normalizes years into a Series of integers with matching index"""
+    """Formats years"""
     cleaned_years = []
 
     for item in items:
@@ -36,3 +36,6 @@ def get_most_in_dataframe(df: pd.DataFrame, head: int) -> list[any]:
     sum = df.sum(axis=0)
 
     return sum.sort_values(ascending=False).head(head).index.tolist()
+
+def normalizes_column():
+    """Normalizes values in dataframe"""

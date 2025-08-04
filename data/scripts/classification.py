@@ -1,4 +1,5 @@
 import random
+import pandas as pd
 from data.scripts.utils.data_frames import artworks
 from data.scripts.artworks import ArtworkCols
 from data.scripts.images.images import download_image
@@ -46,7 +47,7 @@ def get_entry_image_urls_by_classification(classification: str):
 
 
 def classification_by_year_lineplot(
-    df: list[int],
+    df:pd.DataFrame,
     cols: list[str],
     title: Optional[str] = None,
     ax: Axes = None,
@@ -59,7 +60,7 @@ def classification_by_year_lineplot(
 
 
 def all_classification_by_year_lineplot(
-    df: list[int],
+    df:pd.DataFrame,
     cols: list[str],
     title: Optional[str] = None,
     ax: Axes = None,
@@ -71,12 +72,22 @@ def all_classification_by_year_lineplot(
         loc="upper center",
         ncol=4,
         fontsize=8,
-        title="Classification",
         title_fontsize=10,
         frameon=False,
     )
     ax.grid(True)
     ax.set_title(title)
+
+def all_classification_by_year_heatmap(df:pd.DataFrame, title: Optional[str] = None, ax: Axes = None):
+    dataframe = df.copy()
+
+    # Normalize with mean
+    dataframe = (dataframe - dataframe.mean()) / dataframe.std()
+
+    sns.heatmap(dataframe, ax=ax)
+    ax.set_title(title)
+    ax.tick_params(axis="x", rotation=90, labelsize=8)
+    ax.tick_params(axis="y", labelsize=8)
 
 
 ####### CLASSIFICATION DATA ANALYSIS

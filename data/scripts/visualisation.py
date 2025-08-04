@@ -13,7 +13,7 @@ from artworks import (
     overlay_time_series_lineplot,
 )
 from classification import (
-    classification_by_year_lineplot, all_classification_by_year_lineplot
+    classification_by_year_lineplot, all_classification_by_year_lineplot, all_classification_by_year_heatmap
 )
 
 # This script provides an overview of MOMA entries
@@ -117,20 +117,25 @@ fig, axs = plt.subplots(2, 1, figsize=(14, 8))
 classification_totals_by_creation_date = classifications_by_date_matrix.sum(axis=0)
 
 
+
 # filtering out classifications with a minimum of 1000 occurences
 relevant_classifications_by_creation_date = classification_totals_by_creation_date[
     classification_totals_by_creation_date >= 1000
 ].index
+
 filtered_entries_classifications_by_date_matrix = (
     classifications_by_date_matrix[relevant_classifications_by_creation_date]
 )
 
-all_classification_by_year_lineplot(
-    filtered_entries_classifications_by_date_matrix,
-    filtered_entries_classifications_by_date_matrix.columns,
-    title="Yearly Distribution of Artwork Classifications by Creation Date",
-    ax=axs[0],
-)
+# heatmap
+all_classification_by_year_heatmap(classifications_by_date_matrix, "Classification heatmap, proportional to occurence count", ax=axs[0])
+
+# all_classification_by_year_lineplot(
+#     filtered_entries_classifications_by_date_matrix,
+#     filtered_entries_classifications_by_date_matrix.columns,
+#     title="Yearly Distribution of Artwork Classifications by Creation Date",
+#     ax=axs[0],
+# )
 
 window = 3
 
