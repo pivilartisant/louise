@@ -153,16 +153,31 @@ fig, axs = plt.subplots(2, 2, figsize=(14, 6))
 
 # todo: add modernist classification by year
 # todo: add modernist classification by date acquired
+modernist_classifications = ["Painting", "Sculpture", "Architecture", "Photograph", "Collage", "Design" ]
+post_modernist_classifications =  ["Media", "Audio", "Video", "Multiple", "Installation", "Digital"]
 
 classification_by_year_lineplot(
     classifications_by_date_matrix,
-    ["Media", "Audio", "Video", "Multiple", "Installation"],
+    modernist_classifications,
+    title="Modernist classifications by Year",
+    ax=axs[0, 0],
+)
+classification_by_year_lineplot(
+    classifications_by_date_acquired_matrix,
+    modernist_classifications,
+    title="Modernist Classifications by Date Acquired",
+    ax=axs[0, 1],
+)
+
+classification_by_year_lineplot(
+    classifications_by_date_matrix,
+    post_modernist_classifications,
     title="Post-modernist classifications by Year",
     ax=axs[1, 0],
 )
 classification_by_year_lineplot(
     classifications_by_date_acquired_matrix,
-    ["Media", "Audio", "Video", "Multiple", "Installation"],
+    post_modernist_classifications,
     title="Post-modernist Classifications by Date Acquired",
     ax=axs[1, 1],
 )

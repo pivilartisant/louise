@@ -51,8 +51,9 @@ def classification_by_year_lineplot(
     title: Optional[str] = None,
     ax: Axes = None,
 ) -> None:
+    palette = sns.color_palette("husl", len(cols))
     sns.lineplot(
-        data=df[cols], palette=["pink", "blue", "purple", "green", "red"], ax=ax
+        data=df[cols], palette=palette, ax=ax
     )
     ax.set_title(title)
 
