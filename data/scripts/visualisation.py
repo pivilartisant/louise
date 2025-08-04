@@ -151,8 +151,6 @@ plt.close()
 ### Ploto specific classification defined by art historical terms
 fig, axs = plt.subplots(2, 2, figsize=(14, 6))
 
-# todo: add modernist classification by year
-# todo: add modernist classification by date acquired
 modernist_classifications = ["Painting", "Sculpture", "Architecture", "Photograph", "Collage", "Design" ]
 post_modernist_classifications =  ["Media", "Audio", "Video", "Multiple", "Installation", "Digital"]
 
