@@ -1,11 +1,11 @@
 import random
 import pandas as pd
+import seaborn as sns
 from data.scripts.utils.data_frames import artworks
 from data.scripts.artworks import ArtworkCols
 from data.scripts.images.images import download_image
 from typing import Optional
 from matplotlib.axes import Axes
-import seaborn as sns
 from data.scripts.artists import (
     get_least_represented_artist_in_classification,
     get_most_represented_artist_in_classification,
@@ -68,12 +68,38 @@ def all_classification_by_year_lineplot(
     palette = sns.color_palette("husl", n_colors=len(cols))
     sns.lineplot(data=df[cols], palette=palette, ax=ax)
     ax.legend(
-        bbox_to_anchor=(0.5, -0.15),  # move below plot
-        loc="upper center",
-        ncol=4,
+        loc="upper left",
+        ncol=3,
         fontsize=8,
-        title_fontsize=10,
-        frameon=False,
+        title_fontsize=8,
+        frameon=True,
+    )
+    ax.grid(True)
+    ax.set_title(title)
+
+def all_classification_by_year_stack(
+    df:pd.DataFrame,
+    norm:str,
+    title: Optional[str] = None,
+    ax: Axes = None,
+) -> None:
+    if norm == 'minmax':
+        norm_df = (df - df.min()) / (df.max() - df.min())
+    elif norm == 'proportional':
+        row_sums = df.sum(axis=1).replace(0, 1e-9)
+        norm_df = df.div(row_sums, axis=0)
+    else:
+        norm_df = (df - df.mean()) / df.std()
+        
+    x = norm_df.index.values
+    y = norm_df.T.values
+    ax.stackplot(x,*y, labels=norm_df.columns)
+    ax.legend(
+        loc="upper left",
+        ncol=3,
+        fontsize=8,
+        title_fontsize=8,
+        frameon=True,
     )
     ax.grid(True)
     ax.set_title(title)

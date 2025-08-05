@@ -13,7 +13,7 @@ from artworks import (
     overlay_time_series_lineplot,
 )
 from classification import (
-    classification_by_year_lineplot, all_classification_by_year_lineplot, all_classification_by_year_heatmap
+    classification_by_year_lineplot, all_classification_by_year_heatmap, all_classification_by_year_stack
 )
 
 # This script provides an overview of MOMA entries
@@ -110,14 +110,15 @@ plt.tight_layout()
 plt.show()
 plt.close()
 
-### Plot overall classification to identofy trends
 
-fig, axs = plt.subplots(2, 1, figsize=(14, 8))
+### Plot overall classification heatmap to get better understanding of classification creation
+
+fig, ax = plt.subplots(figsize=(14, 8))
 
 classification_totals_by_creation_date = classifications_by_date_matrix.sum(axis=0)
 
 # heatmap
-all_classification_by_year_heatmap(classifications_by_date_matrix, "Classification heatmap, proportional to occurence count", ax=axs[0])
+all_classification_by_year_heatmap(classifications_by_date_matrix, "Classification heatmap, proportional to occurence count", ax=ax)
 
 # all_classification_by_year_lineplot(
 #     filtered_entries_classifications_by_date_matrix,
@@ -126,21 +127,22 @@ all_classification_by_year_heatmap(classifications_by_date_matrix, "Classificati
 #     ax=axs[0],
 # )
 
-rolling_window = 3
+plt.tight_layout()
+plt.show()
+plt.close()
+
+### Plot overall classification heatmap by date acquired to to get better understanding of museums aquirement trends
+fig, axs = plt.subplots(3, 1, figsize=(14, 8))
+
+rolling_window = 2
 
 # filtering out classifications with a minimum of 1000 occurences
 filtered_classifications_by_date_acquired_matrix = filter_by_amount(classifications_by_date_acquired_matrix, 1000)
 
-## how to make this more interesting? 
-
-# rolling average plot
-all_classification_by_year_lineplot(
-    filtered_classifications_by_date_acquired_matrix.rolling(window=rolling_window).mean(),
-    filtered_classifications_by_date_acquired_matrix.columns,
-    title=f"{rolling_window}-Year Rolling Average of Classifications by Date Acquired Date",
-    ax=axs[1],
-)
-
+# stack area chart date acquired by year
+all_classification_by_year_stack(filtered_classifications_by_date_acquired_matrix.rolling(window=rolling_window).mean(),"minmax","Classifications by Date Acquired Stacked Area Chart (MinMax)", ax=axs[0])
+all_classification_by_year_stack(filtered_classifications_by_date_acquired_matrix.rolling(window=rolling_window).mean(),"mean","Classifications by Date Acquired Stacked Area Chart (Z-score)", ax=axs[1])
+all_classification_by_year_stack(filtered_classifications_by_date_acquired_matrix.rolling(window=rolling_window).mean(),"proportional","Classifications by Date Acquired Stacked Area Chart (Proportional)",ax=axs[2])
 
 plt.tight_layout()
 plt.show()

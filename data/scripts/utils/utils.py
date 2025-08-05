@@ -1,5 +1,7 @@
 import re
 import pandas as pd
+import numpy as np
+from statsmodels.nonparametric.smoothers_lowess import lowess
 
 
 def clean_years(items: pd.Series) -> pd.Series:
@@ -46,3 +48,19 @@ def filter_by_amount(df:pd.DataFrame, n:int):
     ].index
 
     return df[f_series]
+
+def apply_lowess_to_dataframe(df: pd.DataFrame, frac: float = 0.1) -> pd.DataFrame:
+    smoothed_df = pd.DataFrame(index=df.index, columns=df.columns)
+
+    x_vals = df.index.values.astype(float) 
+    for col in df.columns:
+        y_vals = df[col].values.astype(float)
+
+        mask = ~np.isnan(y_vals)
+        if mask.sum() >= 3:
+            smoothed = lowess(endog=y_vals[mask], exog=x_vals[mask], frac=frac, return_sorted=False)
+            full_y = np.full_like(y_vals, np.nan, dtype=np.float64)
+            full_y[mask] = smoothed
+            smoothed_df[col] = full_y
+
+    return smoothed_df
