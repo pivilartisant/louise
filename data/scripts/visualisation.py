@@ -4,7 +4,7 @@ from utils.data_frames import artworks
 from utils.utils import (
     clean_years,
     clean_classification_dataframe,
-    get_most_in_dataframe,
+    get_most_in_dataframe,filter_by_amount
 )
 
 from artworks import (
@@ -110,22 +110,11 @@ plt.tight_layout()
 plt.show()
 plt.close()
 
-### Plot overall classification with 1000 entries
+### Plot overall classification to identofy trends
 
 fig, axs = plt.subplots(2, 1, figsize=(14, 8))
 
 classification_totals_by_creation_date = classifications_by_date_matrix.sum(axis=0)
-
-
-
-# filtering out classifications with a minimum of 1000 occurences
-relevant_classifications_by_creation_date = classification_totals_by_creation_date[
-    classification_totals_by_creation_date >= 1000
-].index
-
-filtered_entries_classifications_by_date_matrix = (
-    classifications_by_date_matrix[relevant_classifications_by_creation_date]
-)
 
 # heatmap
 all_classification_by_year_heatmap(classifications_by_date_matrix, "Classification heatmap, proportional to occurence count", ax=axs[0])
@@ -137,13 +126,18 @@ all_classification_by_year_heatmap(classifications_by_date_matrix, "Classificati
 #     ax=axs[0],
 # )
 
-window = 3
+rolling_window = 3
+
+# filtering out classifications with a minimum of 1000 occurences
+filtered_classifications_by_date_acquired_matrix = filter_by_amount(classifications_by_date_acquired_matrix, 1000)
+
+## how to make this more interesting? 
 
 # rolling average plot
 all_classification_by_year_lineplot(
-    filtered_entries_classifications_by_date_matrix.rolling(window=window).mean(),
-    filtered_entries_classifications_by_date_matrix.columns,
-    title=f"{window}-Year Rolling Average of Classifications by Creation Date",
+    filtered_classifications_by_date_acquired_matrix.rolling(window=rolling_window).mean(),
+    filtered_classifications_by_date_acquired_matrix.columns,
+    title=f"{rolling_window}-Year Rolling Average of Classifications by Date Acquired Date",
     ax=axs[1],
 )
 

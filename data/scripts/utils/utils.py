@@ -37,5 +37,12 @@ def get_most_in_dataframe(df: pd.DataFrame, head: int) -> list[any]:
 
     return sum.sort_values(ascending=False).head(head).index.tolist()
 
-def normalizes_column():
-    """Normalizes values in dataframe"""
+def filter_by_amount(df:pd.DataFrame, n:int):
+    s_total = df.sum(axis=0)
+
+    # filtering out classifications with a minimum of n occurences
+    f_series = s_total[
+        s_total >= n
+    ].index
+
+    return df[f_series]
