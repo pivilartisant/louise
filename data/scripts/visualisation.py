@@ -113,7 +113,7 @@ plt.close()
 
 ### Plot overall classification heatmap to get better understanding of classification creation
 
-fig, axs = plt.subplots(2, 1, figsize=(14, 8))
+fig, ax = plt.subplots(1, 1, figsize=(14, 8))
 
 # filtering out classifications with a minimum of 1000 occurences
 filtered_classifications_by_date_acquired_matrix = filter_by_amount(classifications_by_date_acquired_matrix, 1000)
@@ -123,7 +123,7 @@ all_classification_by_year_lineplot(
     filtered_entries_classifications_by_date_matrix,
     filtered_entries_classifications_by_date_matrix.columns,
     title="Yearly Distribution of Artwork Classifications by Creation Date",
-    ax=axs[0],
+    ax=ax,
 )
 
 plt.tight_layout()
