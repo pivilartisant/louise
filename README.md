@@ -2,6 +2,11 @@
 
 I scoured aroud the web to answer this very question. No one was willing to answer. I have long been absent, please teach me.
 
+## Findings of my Data Analysis project
+
+Premise: 
+
+
 # run 
 - Install Python 
 - Install UV 

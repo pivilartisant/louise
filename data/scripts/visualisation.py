@@ -13,7 +13,7 @@ from artworks import (
     overlay_time_series_lineplot,
 )
 from classification import (
-    classification_by_year_lineplot, all_classification_by_year_heatmap, all_classification_by_year_stack
+    classification_by_year_lineplot, all_classification_by_year_heatmap, all_classification_by_year_stack, all_classification_by_year_lineplot
 )
 
 # This script provides an overview of MOMA entries
@@ -113,6 +113,23 @@ plt.close()
 
 ### Plot overall classification heatmap to get better understanding of classification creation
 
+fig, axs = plt.subplots(2, 1, figsize=(14, 8))
+
+# filtering out classifications with a minimum of 1000 occurences
+filtered_classifications_by_date_acquired_matrix = filter_by_amount(classifications_by_date_acquired_matrix, 1000)
+filtered_entries_classifications_by_date_matrix = filter_by_amount(classifications_by_date_matrix,1000)
+
+all_classification_by_year_lineplot(
+    filtered_entries_classifications_by_date_matrix,
+    filtered_entries_classifications_by_date_matrix.columns,
+    title="Yearly Distribution of Artwork Classifications by Creation Date",
+    ax=axs[0],
+)
+
+plt.tight_layout()
+plt.show()
+plt.close()
+
 fig, ax = plt.subplots(figsize=(14, 8))
 
 classification_totals_by_creation_date = classifications_by_date_matrix.sum(axis=0)
@@ -120,24 +137,15 @@ classification_totals_by_creation_date = classifications_by_date_matrix.sum(axis
 # heatmap
 all_classification_by_year_heatmap(classifications_by_date_matrix, "Classification heatmap, proportional to occurence count", ax=ax)
 
-# all_classification_by_year_lineplot(
-#     filtered_entries_classifications_by_date_matrix,
-#     filtered_entries_classifications_by_date_matrix.columns,
-#     title="Yearly Distribution of Artwork Classifications by Creation Date",
-#     ax=axs[0],
-# )
-
 plt.tight_layout()
 plt.show()
 plt.close()
+
 
 ### Plot overall classification heatmap by date acquired to to get better understanding of museums aquirement trends
 fig, axs = plt.subplots(3, 1, figsize=(14, 8))
 
 rolling_window = 2
-
-# filtering out classifications with a minimum of 1000 occurences
-filtered_classifications_by_date_acquired_matrix = filter_by_amount(classifications_by_date_acquired_matrix, 1000)
 
 # stack area chart date acquired by year
 all_classification_by_year_stack(filtered_classifications_by_date_acquired_matrix.rolling(window=rolling_window).mean(),"minmax","Classifications by Date Acquired Stacked Area Chart (MinMax)", ax=axs[0])
@@ -148,25 +156,32 @@ plt.tight_layout()
 plt.show()
 plt.close()
 
+# case study: "Cubism and Abstract Art”
+# fig, axs = plt.subplots(2, 2, figsize=(14, 6))
 
-### Ploto specific classification defined by art historical terms
+# plt.tight_layout()
+# plt.show()
+# plt.close()
+
+
+### case study "post modernist"
 fig, axs = plt.subplots(2, 2, figsize=(14, 6))
 
-modernist_classifications = ["Painting", "Sculpture", "Architecture", "Photograph", "Collage", "Design" ]
-post_modernist_classifications =  ["Media", "Audio", "Video", "Multiple", "Installation", "Digital"]
+# modernist_classifications = ["Painting", "Sculpture", "Architecture", "Photograph", "Collage", "Design" ]
+post_modernist_classifications =  ["Media", "Audio", "Video", "Multiple", "Installation", "Digital", "Ephemera", "Performance"]
 
-classification_by_year_lineplot(
-    classifications_by_date_matrix,
-    modernist_classifications,
-    title="Modernist classifications by Year",
-    ax=axs[0, 0],
-)
-classification_by_year_lineplot(
-    classifications_by_date_acquired_matrix,
-    modernist_classifications,
-    title="Modernist Classifications by Date Acquired",
-    ax=axs[0, 1],
-)
+# classification_by_year_lineplot(
+#     classifications_by_date_matrix,
+#     modernist_classifications,
+#     title="Modernist classifications by Year",
+#     ax=axs[0, 0],
+# )
+# classification_by_year_lineplot(
+#     classifications_by_date_acquired_matrix,
+#     modernist_classifications,
+#     title="Modernist Classifications by Date Acquired",
+#     ax=axs[0, 1],
+# )
 
 classification_by_year_lineplot(
     classifications_by_date_matrix,
