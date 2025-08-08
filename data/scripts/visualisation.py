@@ -1,4 +1,3 @@
-import pandas as pd
 import matplotlib.pyplot as plt
 from utils.data_frames import artworks
 from utils.utils import (

@@ -47,20 +47,18 @@ def get_entry_image_urls_by_classification(classification: str):
 
 
 def classification_by_year_lineplot(
-    df:pd.DataFrame,
+    df: pd.DataFrame,
     cols: list[str],
     title: Optional[str] = None,
     ax: Axes = None,
 ) -> None:
     palette = sns.color_palette("husl", len(cols))
-    sns.lineplot(
-        data=df[cols], palette=palette, ax=ax
-    )
+    sns.lineplot(data=df[cols], palette=palette, ax=ax)
     ax.set_title(title)
 
 
 def all_classification_by_year_lineplot(
-    df:pd.DataFrame,
+    df: pd.DataFrame,
     cols: list[str],
     title: Optional[str] = None,
     ax: Axes = None,
@@ -77,23 +75,24 @@ def all_classification_by_year_lineplot(
     ax.grid(True)
     ax.set_title(title)
 
+
 def all_classification_by_year_stack(
-    df:pd.DataFrame,
-    norm:str,
+    df: pd.DataFrame,
+    norm: str,
     title: Optional[str] = None,
     ax: Axes = None,
 ) -> None:
-    if norm == 'minmax':
+    if norm == "minmax":
         norm_df = (df - df.min()) / (df.max() - df.min())
-    elif norm == 'proportional':
+    elif norm == "proportional":
         row_sums = df.sum(axis=1).replace(0, 1e-9)
         norm_df = df.div(row_sums, axis=0)
     else:
         norm_df = (df - df.mean()) / df.std()
-        
+
     x = norm_df.index.values
     y = norm_df.T.values
-    ax.stackplot(x,*y, labels=norm_df.columns)
+    ax.stackplot(x, *y, labels=norm_df.columns)
     ax.legend(
         loc="upper left",
         ncol=3,
@@ -104,7 +103,10 @@ def all_classification_by_year_stack(
     ax.grid(True)
     ax.set_title(title)
 
-def all_classification_by_year_heatmap(df:pd.DataFrame, title: Optional[str] = None, ax: Axes = None):
+
+def all_classification_by_year_heatmap(
+    df: pd.DataFrame, title: Optional[str] = None, ax: Axes = None
+):
     dataframe = df.copy()
 
     # Normalize with mean
