@@ -3,7 +3,8 @@ from utils.data_frames import artworks
 from utils.utils import (
     clean_years,
     clean_classification_dataframe,
-    get_most_in_dataframe,filter_by_amount
+    get_most_in_dataframe,
+    filter_by_amount,
 )
 
 from artworks import (
@@ -12,7 +13,10 @@ from artworks import (
     overlay_time_series_lineplot,
 )
 from classification import (
-    classification_by_year_lineplot, all_classification_by_year_heatmap, all_classification_by_year_stack, all_classification_by_year_lineplot
+    classification_by_year_lineplot,
+    all_classification_by_year_heatmap,
+    all_classification_by_year_stack,
+    all_classification_by_year_lineplot,
 )
 
 # This script provides an overview of MOMA entries
@@ -56,7 +60,7 @@ overlay_time_series_lineplot(
 valid_classifications = artworks[ArtworkCols.Classification.value].apply(
     lambda x: x not in ["Mies van der Rohe Archive", "Frank Lloyd Wright Archive"]
 )
- #applying filter
+# applying filter
 filtered_artworks = artworks[valid_classifications]
 
 # Classification by date created
@@ -115,8 +119,12 @@ plt.close()
 fig, ax = plt.subplots(1, 1, figsize=(14, 8))
 
 # filtering out classifications with a minimum of 1000 occurences
-filtered_classifications_by_date_acquired_matrix = filter_by_amount(classifications_by_date_acquired_matrix, 1000)
-filtered_entries_classifications_by_date_matrix = filter_by_amount(classifications_by_date_matrix,1000)
+filtered_classifications_by_date_acquired_matrix = filter_by_amount(
+    classifications_by_date_acquired_matrix, 1000
+)
+filtered_entries_classifications_by_date_matrix = filter_by_amount(
+    classifications_by_date_matrix, 1000
+)
 
 all_classification_by_year_lineplot(
     filtered_entries_classifications_by_date_matrix,
@@ -134,7 +142,11 @@ fig, ax = plt.subplots(figsize=(14, 8))
 classification_totals_by_creation_date = classifications_by_date_matrix.sum(axis=0)
 
 # heatmap
-all_classification_by_year_heatmap(classifications_by_date_matrix, "Classification heatmap, proportional to occurence count", ax=ax)
+all_classification_by_year_heatmap(
+    classifications_by_date_matrix,
+    "Classification heatmap, proportional to occurence count",
+    ax=ax,
+)
 
 plt.tight_layout()
 plt.show()
@@ -147,9 +159,30 @@ fig, axs = plt.subplots(3, 1, figsize=(14, 8))
 rolling_window = 2
 
 # stack area chart date acquired by year
-all_classification_by_year_stack(filtered_classifications_by_date_acquired_matrix.rolling(window=rolling_window).mean(),"minmax","Classifications by Date Acquired Stacked Area Chart (MinMax)", ax=axs[0])
-all_classification_by_year_stack(filtered_classifications_by_date_acquired_matrix.rolling(window=rolling_window).mean(),"mean","Classifications by Date Acquired Stacked Area Chart (Z-score)", ax=axs[1])
-all_classification_by_year_stack(filtered_classifications_by_date_acquired_matrix.rolling(window=rolling_window).mean(),"proportional","Classifications by Date Acquired Stacked Area Chart (Proportional)",ax=axs[2])
+all_classification_by_year_stack(
+    filtered_classifications_by_date_acquired_matrix.rolling(
+        window=rolling_window
+    ).mean(),
+    "minmax",
+    "Classifications by Date Acquired Stacked Area Chart (MinMax)",
+    ax=axs[0],
+)
+all_classification_by_year_stack(
+    filtered_classifications_by_date_acquired_matrix.rolling(
+        window=rolling_window
+    ).mean(),
+    "mean",
+    "Classifications by Date Acquired Stacked Area Chart (Z-score)",
+    ax=axs[1],
+)
+all_classification_by_year_stack(
+    filtered_classifications_by_date_acquired_matrix.rolling(
+        window=rolling_window
+    ).mean(),
+    "proportional",
+    "Classifications by Date Acquired Stacked Area Chart (Proportional)",
+    ax=axs[2],
+)
 
 plt.tight_layout()
 plt.show()
@@ -167,7 +200,16 @@ plt.close()
 fig, axs = plt.subplots(2, 2, figsize=(14, 6))
 
 # modernist_classifications = ["Painting", "Sculpture", "Architecture", "Photograph", "Collage", "Design" ]
-post_modernist_classifications =  ["Media", "Audio", "Video", "Multiple", "Installation", "Digital", "Ephemera", "Performance"]
+post_modernist_classifications = [
+    "Media",
+    "Audio",
+    "Video",
+    "Multiple",
+    "Installation",
+    "Digital",
+    "Ephemera",
+    "Performance",
+]
 
 # classification_by_year_lineplot(
 #     classifications_by_date_matrix,

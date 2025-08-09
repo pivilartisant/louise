@@ -3,7 +3,6 @@ import pandas as pd
 import numpy as np
 from statsmodels.nonparametric.smoothers_lowess import lowess
 
-
 def clean_years(items: pd.Series) -> pd.Series:
     """Formats years"""
     cleaned_years = []
@@ -66,3 +65,4 @@ def apply_lowess_to_dataframe(df: pd.DataFrame, frac: float = 0.1) -> pd.DataFra
             smoothed_df[col] = full_y
 
     return smoothed_df
+
