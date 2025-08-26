@@ -162,7 +162,7 @@ The stacked area charts provide insight into the museum’s acquisition history,
 #### Modernist and Post-Modernist Comparative Graphs
 ![lousie_viz_3](visualisations/louise_5.png)
 
-Lineplots showing comparaisons between Modern and Post-Modern art .These arbitrarily set boundries of time and classifications help us identifies trends. 
+Lineplots showing comparaisons between Modern and Post-Modern art. These arbitrary boundries of time and classifications help us identify trends. 
 
 ## Case Study: What happened between 1880 and 1900? 
 ![lousie_viz_6](visualisations/louise_6.png)
