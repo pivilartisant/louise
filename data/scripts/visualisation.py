@@ -43,7 +43,7 @@ entries_created_by_decade = entries_created_by_year.groupby(
 
 # each year
 entry_time_series_barplot(
-    entries_created_by_decade, title="Entries Created by Decade", ax=axs[0, 0]
+    entries_created_by_decade, title="MoMA Artwork Creation Timeline", ax=axs[0, 0]
 )
 # group by decade
 overlay_time_series_lineplot(
@@ -196,10 +196,44 @@ plt.close()
 # plt.close()
 
 
-### case study "post modernist"
+### case study "post modernist and modernist"
+fig, ax = plt.subplots(figsize=(10, 6))
+
+modernist_classifications = [
+    "Painting",
+    "Sculpture",
+    "Architecture",
+    "Photograph",
+    "Collage",
+    "Design",
+]
+
+classification_by_year_lineplot(
+    classifications_by_date_matrix,
+    modernist_classifications,
+    title="Modernist classifications by Year",
+    ax=ax,
+)
+plt.tight_layout()
+plt.show()
+plt.close()
+
+fig, ax = plt.subplots(figsize=(10, 6))
+
+classification_by_year_lineplot(
+    classifications_by_date_acquired_matrix,
+    modernist_classifications,
+    title="Modernist classifications by Date Acquired",
+    ax=ax,
+)
+plt.tight_layout()
+plt.show()
+plt.close()
+
+
 fig, axs = plt.subplots(2, 2, figsize=(14, 6))
 
-# modernist_classifications = ["Painting", "Sculpture", "Architecture", "Photograph", "Collage", "Design" ]
+
 post_modernist_classifications = [
     "Media",
     "Audio",
@@ -211,18 +245,18 @@ post_modernist_classifications = [
     "Performance",
 ]
 
-# classification_by_year_lineplot(
-#     classifications_by_date_matrix,
-#     modernist_classifications,
-#     title="Modernist classifications by Year",
-#     ax=axs[0, 0],
-# )
-# classification_by_year_lineplot(
-#     classifications_by_date_acquired_matrix,
-#     modernist_classifications,
-#     title="Modernist Classifications by Date Acquired",
-#     ax=axs[0, 1],
-# )
+classification_by_year_lineplot(
+    classifications_by_date_matrix,
+    modernist_classifications,
+    title="Modernist classifications by Year",
+    ax=axs[0, 0],
+)
+classification_by_year_lineplot(
+    classifications_by_date_acquired_matrix,
+    modernist_classifications,
+    title="Modernist Classifications by Date Acquired",
+    ax=axs[0, 1],
+)
 
 classification_by_year_lineplot(
     classifications_by_date_matrix,
