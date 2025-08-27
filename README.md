@@ -30,6 +30,7 @@ To establish an understanding if the MoMA Colection Dataset, we will define the 
 
 
 ### Detailed entries of Departments, Classification, Medium
+#### Departments
 | Department                            | Count |
 | ------------------------------------- | ----- |
 | Drawings & Prints                     | 81444 |
@@ -41,23 +42,6 @@ To establish an understanding if the MoMA Colection Dataset, we will define the 
 | Film                                  | 1022  |
 | Architecture & Design - Image Archive | 31    |
 
-
-
-### Detailed entries of Departments, Classification, Medium
-
-#### Departments
-| Department                          |
-|-------------------------------------|
-| Architecture & Design               |
-| Drawings & Prints                   |
-| Painting & Sculpture                |
-| Photography                         |
-| Media and Performance               |
-| Film                                |
-| Architecture & Design - Image Archive|
-| Fluxus Collection                   |
-
----
 
 #### Classifications
 | Classification                 | Count |
